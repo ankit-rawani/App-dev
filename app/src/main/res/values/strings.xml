@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="ques">Qn: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ultricies mollis turpis, nec imperdiet nisi sagittis at?</string>
+    <string name="option1">Option 1</string>
+    <string name="option2">Option 2</string>
+    <string name="option3">Option 3</string>
+    <string name="next_button">NEXT</string>
 </resources>

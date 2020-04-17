@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/back_design2"
+        android:height="60dp"
+        android:width="350dp">
+    </item>
+    <item
+        android:drawable="@drawable/back_design"
+        android:width="350dp"
+        android:height="60dp"
+        android:left="5dp">
+    </item>
+</layer-list>
