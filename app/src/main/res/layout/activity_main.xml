@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".MainActivity">
 
-    <TextView
+    <EditText
         android:id="@+id/ques"
         android:textColor="@color/text2"
-        android:layout_width="370dp"
-        android:layout_height="97dp"
-        android:layout_marginTop="2dp"
+        android:layout_width="350dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="25dp"
         android:layout_centerHorizontal="true"
-        android:text="@string/ques"
-        android:textSize="20sp" />
+        android:hint="@string/ques"
+        android:textSize="15sp" />
 
     <TextView
         android:layout_marginRight="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="20dp"
-        android:id="@+id/radioButton1"
+        android:id="@+id/option1"
         android:textColor="@color/text"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
+        android:visibility="gone"
         android:layout_width="350dp"
         android:layout_centerHorizontal="true"
-        android:layout_height="60dp"
+        android:layout_height="55dp"
         android:layout_below="@id/ques"
-        android:textSize="25sp"
+        android:textSize="15sp"
         android:text="@string/option1"
         android:background="@drawable/left_border" />
 
@@ -39,41 +39,67 @@
         android:layout_width="350dp"
         android:textColor="@color/text"
         android:gravity="center_vertical"
+        android:visibility="gone"
         android:paddingLeft="20dp"
         android:layout_centerHorizontal="true"
-        android:id="@+id/radioButton2"
-        android:layout_height="60dp"
-        android:layout_below="@id/radioButton1"
+        android:id="@+id/option2"
+        android:layout_height="55dp"
+        android:layout_below="@id/option1"
         android:text="@string/option2"
-        android:textSize="25sp"
+        android:textSize="15sp"
         android:background="@drawable/left_border" />
 
     <TextView
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:id="@+id/radioButton3"
+        android:id="@+id/option3"
         android:layout_width="350dp"
         android:textColor="@color/text"
+        android:visibility="gone"
         android:gravity="center_vertical"
         android:paddingLeft="20dp"
         android:layout_centerHorizontal="true"
         android:background="@drawable/left_border"
-        android:layout_height="60dp"
-        android:layout_below="@id/radioButton2"
+        android:layout_height="55dp"
+        android:layout_below="@id/option2"
         android:text="@string/option3"
-        android:textSize="25sp"/>
+        android:textSize="15sp"/>
 
-    <Button
-        android:layout_width="110dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:layout_below="@id/radioButton3"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:text="@string/next_button"
-        android:textSize="30sp"
-        android:textColor="@color/white"
-        android:padding="2dp"
-        android:background="@drawable/back_design2"/>
+        android:layout_below="@id/option3">
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/Ok"
+            android:onClick="ok"
+            android:text="@string/ok_button"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:padding="2dp"
+            android:background="@drawable/back_design2"/>
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:onClick="next"
+            android:id="@+id/next"
+            android:text="@string/next_button"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:padding="2dp"
+            android:background="@drawable/back_design2" />
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>
