@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -31,41 +32,177 @@ public class MainActivity extends AppCompatActivity {
         opt3 = findViewById(R.id.option3);
 
         Log.d(TAG, "onCreate: Hello!");
-    }
 
-    public boolean checkSquare(int n){
-        double sq = Math.sqrt(n);
+        if(savedInstanceState!=null){
+            boolean isVisible = savedInstanceState.getBoolean("isVisible");
 
-        return ((sq - Math.floor(sq)) == 0);
-    }
+            if (isVisible){
+                final int a, b, c, n;
+                a = savedInstanceState.getInt("option1");
+                b = savedInstanceState.getInt("option2");
+                c = savedInstanceState.getInt("option3");
+                n = Integer.parseInt(savedInstanceState.getString("text"));
 
-    public int factor(int n, boolean x){
-        int f, a, b;
-        a = (int) Math.ceil(Math.sqrt(n));
-        while (true){
-            b = (a * a) - n;
-            if(checkSquare(b)){
-                break;
+                opt1.setVisibility(View.VISIBLE);
+                opt2.setVisibility(View.VISIBLE);
+                opt3.setVisibility(View.VISIBLE);
+
+                opt1.setText(String.valueOf(a));
+                opt2.setText(String.valueOf(b));
+                opt3.setText(String.valueOf(c));
+
+                opt1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(n%c==0){
+                            opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
+                            opt1.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                            opt3.setBackgroundColor(getResources().getColor(R.color.right));
+                            opt3.setTextColor(getResources().getColor(R.color.right_text));
+                        }
+                        else if(n%a==0){
+                            //opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
+                            //opt1.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                            opt1.setBackgroundColor(getResources().getColor(R.color.right));
+                            opt1.setTextColor(getResources().getColor(R.color.right_text));
+                        }
+                        else if(n%b==0){
+                            opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
+                            opt1.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                            opt2.setBackgroundColor(getResources().getColor(R.color.right));
+                            opt2.setTextColor(getResources().getColor(R.color.right_text));
+                        }
+                    }
+                });
+
+                opt2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if(n%c==0){
+                            opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
+                            opt2.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                            opt3.setBackgroundColor(getResources().getColor(R.color.right));
+                            opt3.setTextColor(getResources().getColor(R.color.right_text));
+                        }
+                        else if(n%a==0){
+                            opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
+                            opt2.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                            opt1.setBackgroundColor(getResources().getColor(R.color.right));
+                            opt1.setTextColor(getResources().getColor(R.color.right_text));
+                        }
+                        else if(n%b==0){
+                            //opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
+                            //opt2.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                            opt2.setBackgroundColor(getResources().getColor(R.color.right));
+                            opt2.setTextColor(getResources().getColor(R.color.right_text));
+                        }
+
+                    }
+                });
+
+                opt3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        if(n%c==0){
+                            //opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
+                            //opt1.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                            opt3.setBackgroundColor(getResources().getColor(R.color.right));
+                            opt3.setTextColor(getResources().getColor(R.color.right_text));
+                        }
+                        else if(n%a==0){
+                            opt3.setBackgroundColor(getResources().getColor(R.color.wrong));
+                            opt3.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                            opt1.setBackgroundColor(getResources().getColor(R.color.right));
+                            opt1.setTextColor(getResources().getColor(R.color.right_text));
+                        }
+                        else if(n%b==0){
+                            opt3.setBackgroundColor(getResources().getColor(R.color.wrong));
+                            opt3.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                            opt2.setBackgroundColor(getResources().getColor(R.color.right));
+                            opt2.setTextColor(getResources().getColor(R.color.right_text));
+                        }
+
+                    }
+                });
             }
-            a++;
         }
-        f = (int) (x? (a+Math.sqrt(b)):(a-Math.sqrt(b)));
-        return f;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        if(opt1.getVisibility()==View.VISIBLE){
+            outState.putBoolean("isVisible", true);
+            outState.putInt("option1", Integer.parseInt(opt1.getText().toString()));
+            outState.putInt("option2", Integer.parseInt(opt2.getText().toString()));
+            outState.putInt("option3", Integer.parseInt(opt3.getText().toString()));
+            outState.putString("text", num.getText().toString());
+        }
 
     }
 
-    public int nonFactor(int n, int f, boolean x){
+
+
+    public Vector<Integer> factors(int n){
+        Vector<Integer> ret = new Vector<>();
+        int i = 1;
+        while(i*i<=n){
+            if(n%i==0){
+                if(i!=n/i){
+                    ret.addElement(i);
+                    ret.addElement((n/i));
+                }
+                else{
+                    ret.addElement(i);
+                }
+            }
+
+
+            i++;
+        }
+        return ret;
+    }
+
+    public int randomfactor(Vector<Integer> v){
+        Random Rn = new Random();
+        int a = Rn.nextInt(v.size());
+
+        return v.get(a);
+
+    }
+
+    public int nonFactor(int n, int f){
         int a;
         Random Rn = new Random();
-        a = Rn.nextInt(f);
-        while(n%a != 0 && a==f){
-            if(x) --a;
-            else ++a;
+        a = Rn.nextInt(n);
+        while((n%a == 0) || (a == f)){
+            a++;
         }
         return a;
     }
 
     public void ok(View view) {
+        opt1.setBackground(getResources().getDrawable(R.drawable.left_border));
+        opt2.setBackground(getResources().getDrawable(R.drawable.left_border));
+        opt3.setBackground(getResources().getDrawable(R.drawable.left_border));
+
+        opt1.setTextColor(getResources().getColor(R.color.text));
+        opt2.setTextColor(getResources().getColor(R.color.text));
+        opt3.setTextColor(getResources().getColor(R.color.text));
+
+        num.setTextColor(getResources().getColor(R.color.text));
         game();
     }
 
@@ -83,37 +220,36 @@ public class MainActivity extends AppCompatActivity {
         opt1.setTextColor(getResources().getColor(R.color.text));
         opt2.setTextColor(getResources().getColor(R.color.text));
         opt3.setTextColor(getResources().getColor(R.color.text));
+        num.setTextColor(getResources().getColor(R.color.text));
         Log.d(TAG, "onClick: NEXT");
     }
 
     public void game(){
         try{
-
-            boolean x =  (0.5 - Math.random())>0;
             int inp = Integer.parseInt(String.valueOf(num.getText()));
-            int fac = factor(inp, x);
+            int fac = randomfactor(factors(inp));
 
             opt1.setVisibility(View.VISIBLE);
             opt2.setVisibility(View.VISIBLE);
             opt3.setVisibility(View.VISIBLE);
 
             final int c = (int) Math.ceil(Math.random()*10);
-            int b = nonFactor(inp, fac, x);
+            int b = nonFactor(inp, fac);
             if(c%3==0){
                 opt3.setText(String.valueOf(fac));
                 opt2.setText(String.valueOf(b));
-                opt1.setText(String.valueOf(nonFactor(inp, b, x)));
+                opt1.setText(String.valueOf(nonFactor(inp, fac)));
             }
             else if(c%3==1){
                 opt1.setText(String.valueOf(fac));
                 opt3.setText(String.valueOf(b));
-                opt2.setText(String.valueOf(nonFactor(inp, b, x)));
+                opt2.setText(String.valueOf(nonFactor(inp, fac)));
 
             }
             else {
                 opt2.setText(String.valueOf(fac));
                 opt1.setText(String.valueOf(b));
-                opt3.setText(String.valueOf(nonFactor(inp, b, x)));
+                opt3.setText(String.valueOf(nonFactor(inp, fac)));
             }
 
             opt1.setOnClickListener(new View.OnClickListener() {
@@ -206,8 +342,11 @@ public class MainActivity extends AppCompatActivity {
 
             Log.d(TAG, "ok: "+inp);
         } catch(Exception e){
+            num.setTextColor(getResources().getColor(R.color.wrong_text));
+            num.setText(R.string.invalid);
             Toast toast = Toast.makeText(this, "Not an Integer", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
 }
+
