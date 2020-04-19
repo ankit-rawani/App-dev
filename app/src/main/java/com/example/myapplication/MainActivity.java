@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView best;
     private int current_count = 0;
     private int best_count;
-    private Vibrator vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+    private Vibrator vib;
 
     private TextView opt1;
     private TextView opt2;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
-
+        vib = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         num = findViewById(R.id.ques);
 
         opt1 = findViewById(R.id.option1);
