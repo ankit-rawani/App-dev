@@ -11,5 +11,6 @@
     <color name="wrong">#FF9E9E</color>
     <color name="right">#B3FFB2</color>
     <color name="wrong_text">#881C1C</color>
+    <color name="wrong_toast">#EF5656</color>
     <color name="right_text">#1C701A</color>
 </resources>
