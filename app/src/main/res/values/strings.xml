@@ -4,7 +4,10 @@
     <string name="option1">Option 1</string>
     <string name="option2">Option 2</string>
     <string name="option3">Option 3</string>
-    <string name="next_button">NEXT</string>
-    <string name="ok_button">OK</string>
+    <string name="next_button">Play again</string>
+    <string name="ok_button">Ok</string>
     <string name="invalid">Invalid input</string>
+    <string name="score">0</string>
+    <string name="best">BEST</string>
+    <string name="current">CURRENT</string>
 </resources>

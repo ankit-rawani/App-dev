@@ -3,6 +3,7 @@ package com.example.myapplication;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,8 +13,14 @@ import android.widget.Toast;
 import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
+    private SharedPreferences mPreferences;
+    private String sharedPrefFile = "com.example.android.myapplication";
     private static final String TAG = "MainActivity";
     private EditText num ;
+    private TextView current;
+    private TextView best;
+    private int current_count = 0;
+    private int best_count;
 
     private TextView opt1;
     private TextView opt2;
@@ -24,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
 
         num = findViewById(R.id.ques);
 
@@ -31,10 +39,19 @@ public class MainActivity extends AppCompatActivity {
         opt2 = findViewById(R.id.option2);
         opt3 = findViewById(R.id.option3);
 
+        current = findViewById(R.id.current);
+        best = findViewById(R.id.best);
+
         Log.d(TAG, "onCreate: Hello!");
+
+        best_count = mPreferences.getInt("BEST", 0);
+        best.setText(String.valueOf(best_count));
+        current.setText(String.valueOf(current_count));
 
         if(savedInstanceState!=null){
             boolean isVisible = savedInstanceState.getBoolean("isVisible");
+            current_count = savedInstanceState.getInt("current");
+            current.setText(String.valueOf(current_count));
 
             if (isVisible){
                 final int a, b, c, n;
@@ -60,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
                             opt3.setBackgroundColor(getResources().getColor(R.color.right));
                             opt3.setTextColor(getResources().getColor(R.color.right_text));
+                            current_count = 0;
                         }
                         else if(n%a==0){
                             //opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -67,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
                             opt1.setBackgroundColor(getResources().getColor(R.color.right));
                             opt1.setTextColor(getResources().getColor(R.color.right_text));
+                            current_count++;
                         }
                         else if(n%b==0){
                             opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -74,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                             opt2.setBackgroundColor(getResources().getColor(R.color.right));
                             opt2.setTextColor(getResources().getColor(R.color.right_text));
+                            current_count = 0;
                         }
                     }
                 });
@@ -88,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
                             opt3.setBackgroundColor(getResources().getColor(R.color.right));
                             opt3.setTextColor(getResources().getColor(R.color.right_text));
+                            current_count = 0;
                         }
                         else if(n%a==0){
                             opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -95,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
                             opt1.setBackgroundColor(getResources().getColor(R.color.right));
                             opt1.setTextColor(getResources().getColor(R.color.right_text));
+                            current_count = 0;
                         }
                         else if(n%b==0){
                             //opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -102,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
                             opt2.setBackgroundColor(getResources().getColor(R.color.right));
                             opt2.setTextColor(getResources().getColor(R.color.right_text));
+                            current_count++;
                         }
 
                     }
@@ -117,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
                             opt3.setBackgroundColor(getResources().getColor(R.color.right));
                             opt3.setTextColor(getResources().getColor(R.color.right_text));
+                            current_count++;
                         }
                         else if(n%a==0){
                             opt3.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -124,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
                             opt1.setBackgroundColor(getResources().getColor(R.color.right));
                             opt1.setTextColor(getResources().getColor(R.color.right_text));
+                            current_count = 0;
                         }
                         else if(n%b==0){
                             opt3.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -131,17 +156,30 @@ public class MainActivity extends AppCompatActivity {
 
                             opt2.setBackgroundColor(getResources().getColor(R.color.right));
                             opt2.setTextColor(getResources().getColor(R.color.right_text));
+                            current_count = 0;
                         }
 
                     }
                 });
+
+                current.setText(String.valueOf(current_count));
             }
         }
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        preferencesEditor.putInt("BEST", best_count);
+        preferencesEditor.apply();
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putInt("current", current_count);
 
         if(opt1.getVisibility()==View.VISIBLE){
             outState.putBoolean("isVisible", true);
@@ -202,12 +240,24 @@ public class MainActivity extends AppCompatActivity {
         opt2.setTextColor(getResources().getColor(R.color.text));
         opt3.setTextColor(getResources().getColor(R.color.text));
 
-        num.setTextColor(getResources().getColor(R.color.text));
+        num.setHintTextColor(getResources().getColor(R.color.wrong_text));
+        num.setHint(R.string.invalid);
         game();
+        if(current_count>best_count){
+            best_count = current_count;
+            best.setText(String.valueOf(best_count));
+        }
     }
 
     public void next(View view) {
+        current.setText(String.valueOf(current_count));
+        if(current_count>best_count){
+            best_count = current_count;
+            best.setText(String.valueOf(best_count));
+        }
         num.setText("");
+        num.setHintTextColor(getResources().getColor(R.color.text));
+        num.setHint(R.string.ques);
 
         opt1.setVisibility(View.GONE);
         opt2.setVisibility(View.GONE);
@@ -261,6 +311,7 @@ public class MainActivity extends AppCompatActivity {
 
                         opt3.setBackgroundColor(getResources().getColor(R.color.right));
                         opt3.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
                     }
                     else if(c%3==1){
                         //opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -268,6 +319,7 @@ public class MainActivity extends AppCompatActivity {
 
                         opt1.setBackgroundColor(getResources().getColor(R.color.right));
                         opt1.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count++;
                     }
                     else{
                         opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -275,6 +327,7 @@ public class MainActivity extends AppCompatActivity {
 
                         opt2.setBackgroundColor(getResources().getColor(R.color.right));
                         opt2.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
                     }
                 }
             });
@@ -289,6 +342,7 @@ public class MainActivity extends AppCompatActivity {
 
                         opt3.setBackgroundColor(getResources().getColor(R.color.right));
                         opt3.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
                     }
                     else if(c%3==1){
                         opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -296,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
 
                         opt1.setBackgroundColor(getResources().getColor(R.color.right));
                         opt1.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
                     }
                     else{
                         //opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -303,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
 
                         opt2.setBackgroundColor(getResources().getColor(R.color.right));
                         opt2.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count++;
                     }
 
                 }
@@ -318,6 +374,7 @@ public class MainActivity extends AppCompatActivity {
 
                         opt3.setBackgroundColor(getResources().getColor(R.color.right));
                         opt3.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count++;
                     }
                     else if(c%3==1){
                         opt3.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -325,6 +382,7 @@ public class MainActivity extends AppCompatActivity {
 
                         opt1.setBackgroundColor(getResources().getColor(R.color.right));
                         opt1.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
                     }
                     else{
                         opt3.setBackgroundColor(getResources().getColor(R.color.wrong));
@@ -332,18 +390,18 @@ public class MainActivity extends AppCompatActivity {
 
                         opt2.setBackgroundColor(getResources().getColor(R.color.right));
                         opt2.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
                     }
 
                 }
             });
 
-
-
+            current.setText(String.valueOf(current_count));
 
             Log.d(TAG, "ok: "+inp);
         } catch(Exception e){
-            num.setTextColor(getResources().getColor(R.color.wrong_text));
-            num.setText(R.string.invalid);
+            num.setHintTextColor(getResources().getColor(R.color.text));
+            num.setHint(R.string.ques);
             Toast toast = Toast.makeText(this, "Not an Integer", Toast.LENGTH_SHORT);
             toast.show();
         }

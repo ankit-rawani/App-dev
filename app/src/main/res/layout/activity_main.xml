@@ -11,6 +11,57 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/current"
+                android:textSize="15sp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="end"
+                android:textStyle="bold"
+                android:textColor="@color/text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/current"
+                android:layout_marginRight="10dp"
+                android:text="@string/score"
+                android:textSize="15sp"
+                android:layout_gravity="end"
+                android:textStyle="bold"
+                android:textColor="@color/text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/best"
+                android:textSize="15sp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="end"
+                android:textStyle="bold"
+                android:textColor="@color/text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="16dp"
+                android:text="@string/score"
+                android:id="@+id/best"
+                android:textSize="15sp"
+                android:layout_gravity="end"
+                android:textStyle="bold"
+                android:textColor="@color/text" />
+
+        </LinearLayout>
+
+
         <EditText
             android:id="@+id/ques"
             android:layout_width="350dp"
@@ -98,7 +149,7 @@
             <Button
                 android:id="@+id/next"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="80dp"
+                android:layout_width="130dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
