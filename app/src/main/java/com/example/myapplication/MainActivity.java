@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.util.Log;
@@ -26,10 +27,12 @@ public class MainActivity extends AppCompatActivity {
     private int current_count = 0;
     private int best_count;
     private Vibrator vib;
+    private int counter;
 
     private TextView opt1;
     private TextView opt2;
     private TextView opt3;
+    private TextView time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         opt1 = findViewById(R.id.option1);
         opt2 = findViewById(R.id.option2);
         opt3 = findViewById(R.id.option3);
+        time = findViewById(R.id.time);
+        counter = 10;
 
         current = findViewById(R.id.current);
         best = findViewById(R.id.best);
@@ -191,6 +196,29 @@ public class MainActivity extends AppCompatActivity {
         num.setHint("Wrong answer");
     }
 
+
+//    public void timer_finished(){
+//        int n = Integer.parseInt(num.getText().toString());
+//        int a = Integer.parseInt(opt1.getText().toString());
+//        int b = Integer.parseInt(opt2.getText().toString());
+//
+//        if(n%a==0){
+//            opt1.setBackgroundColor(getResources().getColor(R.color.right));
+//            opt1.setTextColor(getResources().getColor(R.color.right_text));
+//        }
+//        else if(n%b==0){
+//            opt2.setBackgroundColor(getResources().getColor(R.color.right));
+//            opt2.setTextColor(getResources().getColor(R.color.right_text));
+//        }
+//        else {
+//            opt3.setBackgroundColor(getResources().getColor(R.color.right));
+//            opt3.setTextColor(getResources().getColor(R.color.right_text));
+//        }
+//        opt1.setClickable(false);
+//        opt2.setClickable(false);
+//        opt3.setClickable(false);
+//    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -264,6 +292,7 @@ public class MainActivity extends AppCompatActivity {
 
         num.setHintTextColor(getResources().getColor(R.color.text));
         num.setHint(R.string.ques);
+
         game();
         if (current_count > best_count) {
             best_count = current_count;
@@ -321,7 +350,6 @@ public class MainActivity extends AppCompatActivity {
                 opt1.setText(String.valueOf(b));
                 opt3.setText(String.valueOf(nonFactor(inp, fac)));
             }
-
 
 
             opt1.setOnClickListener(new View.OnClickListener() {
