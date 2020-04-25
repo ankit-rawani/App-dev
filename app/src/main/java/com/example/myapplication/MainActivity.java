@@ -263,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
                 opt3.setClickable(false);
                 ok.setVisibility(View.GONE);
                 next.setVisibility(View.VISIBLE);
+                current_count = 0;
             }
 
     }
