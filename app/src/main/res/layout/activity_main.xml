@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/parent"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -82,6 +83,7 @@
             android:layout_marginTop="25dp"
             android:autofillHints=""
             android:hint="@string/ques"
+            android:outlineSpotShadowColor="@color/text"
             android:inputType="number"
             android:textColor="@color/text2"
             android:textSize="15sp" />
@@ -148,7 +150,7 @@
             <Button
                 android:id="@+id/ok"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="80dp"
+                android:layout_width="90dp"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/back_design2"
@@ -161,7 +163,7 @@
             <Button
                 android:id="@+id/next"
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="100dp"
+                android:layout_width="90dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"

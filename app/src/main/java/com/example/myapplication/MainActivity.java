@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private CountDownTimer timer;
     private boolean timer_on;
 
-    private Long timeLeft;
+    private Long timeLeft = 10000L;
 
     private TextView opt1;
     private TextView opt2;
@@ -64,147 +65,152 @@ public class MainActivity extends AppCompatActivity {
         best_count = mPreferences.getInt("BEST", 0);
         best.setText(String.valueOf(best_count));
         current.setText(String.valueOf(current_count));
+    }
 
-        if (savedInstanceState != null) {
-            boolean isVisible = savedInstanceState.getBoolean("isVisible");
-            current_count = savedInstanceState.getInt("current");
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        boolean isVisible = savedInstanceState.getBoolean("isVisible");
+        current_count = savedInstanceState.getInt("current");
+        current.setText(String.valueOf(current_count));
+
+        if (isVisible) {
+            final int a, b, c, n;
+            a = savedInstanceState.getInt("option1");
+            b = savedInstanceState.getInt("option2");
+            c = savedInstanceState.getInt("option3");
+            n = Integer.parseInt(savedInstanceState.getString("text"));
+            timeLeft = savedInstanceState.getLong("timeleft");
+            timer_on = savedInstanceState.getBoolean("timer_on");
+            Log.d(TAG, "onRestoreInstanceState: "+timeLeft);
+
+            opt1.setVisibility(View.VISIBLE);
+            opt2.setVisibility(View.VISIBLE);
+            opt3.setVisibility(View.VISIBLE);
+
+            opt1.setText(String.valueOf(a));
+            opt2.setText(String.valueOf(b));
+            opt3.setText(String.valueOf(c));
+
+            if(timer_on) startTimer();
+
+            opt1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (n % c == 0) {
+                        opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
+                        opt1.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                        opt3.setBackgroundColor(getResources().getColor(R.color.right));
+                        opt3.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
+                        vibe();
+                    } else if (n % a == 0) {
+                        //opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
+                        //opt1.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                        opt1.setBackgroundColor(getResources().getColor(R.color.right));
+                        opt1.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count++;
+                    } else if (n % b == 0) {
+                        opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
+                        opt1.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                        opt2.setBackgroundColor(getResources().getColor(R.color.right));
+                        opt2.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
+                        vibe();
+                    }
+                    opt1.setClickable(false);
+                    opt2.setClickable(false);
+                    opt3.setClickable(false);
+                    ok.setVisibility(View.GONE);
+                    next.setVisibility(View.VISIBLE);
+                    timer.cancel();
+                    timer_on = false;
+                }
+            });
+
+            opt2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (n % c == 0) {
+                        opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
+                        opt2.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                        opt3.setBackgroundColor(getResources().getColor(R.color.right));
+                        opt3.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
+                        vibe();
+                    } else if (n % a == 0) {
+                        opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
+                        opt2.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                        opt1.setBackgroundColor(getResources().getColor(R.color.right));
+                        opt1.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
+                        vibe();
+                    } else if (n % b == 0) {
+                        //opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
+                        //opt2.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                        opt2.setBackgroundColor(getResources().getColor(R.color.right));
+                        opt2.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count++;
+                    }
+                    opt1.setClickable(false);
+                    opt2.setClickable(false);
+                    opt3.setClickable(false);
+                    ok.setVisibility(View.GONE);
+                    next.setVisibility(View.VISIBLE);
+                    timer.cancel();
+                    timer_on = false;
+
+                }
+            });
+
+            opt3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (n % c == 0) {
+                        //opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
+                        //opt1.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                        opt3.setBackgroundColor(getResources().getColor(R.color.right));
+                        opt3.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count++;
+                    } else if (n % a == 0) {
+                        opt3.setBackgroundColor(getResources().getColor(R.color.wrong));
+                        opt3.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                        opt1.setBackgroundColor(getResources().getColor(R.color.right));
+                        opt1.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
+                        vibe();
+                    } else if (n % b == 0) {
+                        opt3.setBackgroundColor(getResources().getColor(R.color.wrong));
+                        opt3.setTextColor(getResources().getColor(R.color.wrong_text));
+
+                        opt2.setBackgroundColor(getResources().getColor(R.color.right));
+                        opt2.setTextColor(getResources().getColor(R.color.right_text));
+                        current_count = 0;
+                        vibe();
+                    }
+                    opt1.setClickable(false);
+                    opt2.setClickable(false);
+                    opt3.setClickable(false);
+                    ok.setVisibility(View.GONE);
+                    next.setVisibility(View.VISIBLE);
+                    timer.cancel();
+                    timer_on = false;
+
+                }
+            });
+
             current.setText(String.valueOf(current_count));
-
-            if (isVisible) {
-                final int a, b, c, n;
-                a = savedInstanceState.getInt("option1");
-                b = savedInstanceState.getInt("option2");
-                c = savedInstanceState.getInt("option3");
-                n = Integer.parseInt(savedInstanceState.getString("text"));
-                timeLeft = savedInstanceState.getLong("timeLeft");
-
-                opt1.setVisibility(View.VISIBLE);
-                opt2.setVisibility(View.VISIBLE);
-                opt3.setVisibility(View.VISIBLE);
-
-                opt1.setText(String.valueOf(a));
-                opt2.setText(String.valueOf(b));
-                opt3.setText(String.valueOf(c));
-
-                startTimer();
-
-                opt1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (n % c == 0) {
-                            opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
-                            opt1.setTextColor(getResources().getColor(R.color.wrong_text));
-
-                            opt3.setBackgroundColor(getResources().getColor(R.color.right));
-                            opt3.setTextColor(getResources().getColor(R.color.right_text));
-                            current_count = 0;
-                            vibe();
-                        } else if (n % a == 0) {
-                            //opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
-                            //opt1.setTextColor(getResources().getColor(R.color.wrong_text));
-
-                            opt1.setBackgroundColor(getResources().getColor(R.color.right));
-                            opt1.setTextColor(getResources().getColor(R.color.right_text));
-                            current_count++;
-                        } else if (n % b == 0) {
-                            opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
-                            opt1.setTextColor(getResources().getColor(R.color.wrong_text));
-
-                            opt2.setBackgroundColor(getResources().getColor(R.color.right));
-                            opt2.setTextColor(getResources().getColor(R.color.right_text));
-                            current_count = 0;
-                            vibe();
-                        }
-                        opt1.setClickable(false);
-                        opt2.setClickable(false);
-                        opt3.setClickable(false);
-                        ok.setVisibility(View.GONE);
-                        next.setVisibility(View.VISIBLE);
-                        timer.cancel();
-                        time.setText(getResources().getString(R.string.time));
-                    }
-                });
-
-                opt2.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (n % c == 0) {
-                            opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
-                            opt2.setTextColor(getResources().getColor(R.color.wrong_text));
-
-                            opt3.setBackgroundColor(getResources().getColor(R.color.right));
-                            opt3.setTextColor(getResources().getColor(R.color.right_text));
-                            current_count = 0;
-                            vibe();
-                        } else if (n % a == 0) {
-                            opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
-                            opt2.setTextColor(getResources().getColor(R.color.wrong_text));
-
-                            opt1.setBackgroundColor(getResources().getColor(R.color.right));
-                            opt1.setTextColor(getResources().getColor(R.color.right_text));
-                            current_count = 0;
-                            vibe();
-                        } else if (n % b == 0) {
-                            //opt2.setBackgroundColor(getResources().getColor(R.color.wrong));
-                            //opt2.setTextColor(getResources().getColor(R.color.wrong_text));
-
-                            opt2.setBackgroundColor(getResources().getColor(R.color.right));
-                            opt2.setTextColor(getResources().getColor(R.color.right_text));
-                            current_count++;
-                        }
-                        opt1.setClickable(false);
-                        opt2.setClickable(false);
-                        opt3.setClickable(false);
-                        ok.setVisibility(View.GONE);
-                        next.setVisibility(View.VISIBLE);
-                        timer.cancel();
-                        time.setText(getResources().getString(R.string.time));
-
-                    }
-                });
-
-                opt3.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if (n % c == 0) {
-                            //opt1.setBackgroundColor(getResources().getColor(R.color.wrong));
-                            //opt1.setTextColor(getResources().getColor(R.color.wrong_text));
-
-                            opt3.setBackgroundColor(getResources().getColor(R.color.right));
-                            opt3.setTextColor(getResources().getColor(R.color.right_text));
-                            current_count++;
-                        } else if (n % a == 0) {
-                            opt3.setBackgroundColor(getResources().getColor(R.color.wrong));
-                            opt3.setTextColor(getResources().getColor(R.color.wrong_text));
-
-                            opt1.setBackgroundColor(getResources().getColor(R.color.right));
-                            opt1.setTextColor(getResources().getColor(R.color.right_text));
-                            current_count = 0;
-                            vibe();
-                        } else if (n % b == 0) {
-                            opt3.setBackgroundColor(getResources().getColor(R.color.wrong));
-                            opt3.setTextColor(getResources().getColor(R.color.wrong_text));
-
-                            opt2.setBackgroundColor(getResources().getColor(R.color.right));
-                            opt2.setTextColor(getResources().getColor(R.color.right_text));
-                            current_count = 0;
-                            vibe();
-                        }
-                        opt1.setClickable(false);
-                        opt2.setClickable(false);
-                        opt3.setClickable(false);
-                        ok.setVisibility(View.GONE);
-                        next.setVisibility(View.VISIBLE);
-                        timer.cancel();
-                        time.setText(getResources().getString(R.string.time));
-
-                    }
-                });
-
-                current.setText(String.valueOf(current_count));
-            }
         }
     }
 
@@ -219,46 +225,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startTimer(){
-        timer = new CountDownTimer(timeLeft, 1000) {
+        timer = new CountDownTimer(timeLeft, 100) {
             @Override
             public void onTick(long millisUntilFinished) {
                 timeLeft = millisUntilFinished;
-
                 time.setText(String.valueOf(timeLeft/1000));
             }
 
             @Override
             public void onFinish() {
-                timer_finished();
+                timer_on = false;
+                updateTimer();
             }
         }.start();
+
+        timer_on = true;
     }
 
+    public void updateTimer(){
+            if (timeLeft < 1000) {
+                int n = Integer.parseInt(num.getText().toString());
+                int a = Integer.parseInt(opt1.getText().toString());
+                int b = Integer.parseInt(opt2.getText().toString());
 
+                if (n % a == 0) {
+                    opt1.setBackgroundColor(getResources().getColor(R.color.right));
+                    opt1.setTextColor(getResources().getColor(R.color.right_text));
+                } else if (n % b == 0) {
+                    opt2.setBackgroundColor(getResources().getColor(R.color.right));
+                    opt2.setTextColor(getResources().getColor(R.color.right_text));
+                } else {
+                    opt3.setBackgroundColor(getResources().getColor(R.color.right));
+                    opt3.setTextColor(getResources().getColor(R.color.right_text));
+                }
+                opt1.setClickable(false);
+                opt2.setClickable(false);
+                opt3.setClickable(false);
+                ok.setVisibility(View.GONE);
+                next.setVisibility(View.VISIBLE);
+            }
 
-
-    public void timer_finished(){
-        int n = Integer.parseInt(num.getText().toString());
-        int a = Integer.parseInt(opt1.getText().toString());
-        int b = Integer.parseInt(opt2.getText().toString());
-
-        if(n%a==0){
-            opt1.setBackgroundColor(getResources().getColor(R.color.right));
-            opt1.setTextColor(getResources().getColor(R.color.right_text));
-        }
-        else if(n%b==0){
-            opt2.setBackgroundColor(getResources().getColor(R.color.right));
-            opt2.setTextColor(getResources().getColor(R.color.right_text));
-        }
-        else {
-            opt3.setBackgroundColor(getResources().getColor(R.color.right));
-            opt3.setTextColor(getResources().getColor(R.color.right_text));
-        }
-        opt1.setClickable(false);
-        opt2.setClickable(false);
-        opt3.setClickable(false);
-        ok.setVisibility(View.GONE);
-        next.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -269,25 +275,6 @@ public class MainActivity extends AppCompatActivity {
         preferencesEditor.putInt("BEST", best_count);
         preferencesEditor.apply();
     }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putInt("current", current_count);
-
-        if (opt1.getVisibility() == View.VISIBLE) {
-            outState.putBoolean("isVisible", true);
-            outState.putInt("option1", Integer.parseInt(opt1.getText().toString()));
-            outState.putInt("option2", Integer.parseInt(opt2.getText().toString()));
-            outState.putInt("option3", Integer.parseInt(opt3.getText().toString()));
-            outState.putString("text", num.getText().toString());
-            outState.putLong("timeleft", Long.parseLong(time.getText().toString()));
-            timer.cancel();
-
-        }
-
-    }
-
 
     public Vector<Integer> factors(int n) {
         Vector<Integer> ret = new Vector<>();
@@ -360,6 +347,8 @@ public class MainActivity extends AppCompatActivity {
         opt3.setVisibility(View.GONE);
         ok.setVisibility(View.VISIBLE);
         next.setVisibility(View.GONE);
+        time.setText(getResources().getString(R.string.time));
+        timeLeft = 10000L;
 
         opt1.setBackground(getResources().getDrawable(R.drawable.left_border));
         opt2.setBackground(getResources().getDrawable(R.drawable.left_border));
@@ -398,7 +387,6 @@ public class MainActivity extends AppCompatActivity {
                 opt3.setText(String.valueOf(nonFactor(inp, fac)));
             }
 
-            timeLeft = 10000L;
             startTimer();
 
             opt1.setOnClickListener(new View.OnClickListener() {
@@ -435,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
                     ok.setVisibility(View.GONE);
                     next.setVisibility(View.VISIBLE);
                     timer.cancel();
-                    time.setText(getResources().getString(R.string.time));
+                    timer_on = false;
                 }
             });
 
@@ -474,7 +462,7 @@ public class MainActivity extends AppCompatActivity {
                     ok.setVisibility(View.GONE);
                     next.setVisibility(View.VISIBLE);
                     timer.cancel();
-                    time.setText(getResources().getString(R.string.time));
+                    timer_on = false;
 
                 }
             });
@@ -514,7 +502,7 @@ public class MainActivity extends AppCompatActivity {
                     ok.setVisibility(View.GONE);
                     next.setVisibility(View.VISIBLE);
                     timer.cancel();
-                    time.setText(getResources().getString(R.string.time));
+                    timer_on = false;
 
                 }
             });
@@ -534,6 +522,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("current", current_count);
+        outState.putBoolean("timer_on", timer_on);
+        Log.d(TAG, "onSaveInstanceState: "+time.getText().toString());
+        outState.putLong("timeleft", 1000L*Long.parseLong(time.getText().toString()));
 
+
+        if (opt1.getVisibility() == View.VISIBLE) {
+            outState.putBoolean("isVisible", true);
+            outState.putInt("option1", Integer.parseInt(opt1.getText().toString()));
+            outState.putInt("option2", Integer.parseInt(opt2.getText().toString()));
+            outState.putInt("option3", Integer.parseInt(opt3.getText().toString()));
+            outState.putString("text", num.getText().toString());
+
+        }
+
+    }
 
 }
